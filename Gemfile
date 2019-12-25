@@ -52,3 +52,18 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+#Style gems
+#gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap', '~> 4.3', '>= 4.3.1'
+gem 'bootstrap-will_paginate'
+gem 'will_paginate'
+#gem 'font-awesome-rails', '~> 4.7', '>= 4.7.0.1'
+gem 'font-awesome-sass', '~> 5.9.0'
+gem 'bootstrap-social-rails', '~> 4.8'
+
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+
+#jquery plugin for recipients selection
+gem 'chosen-rails'

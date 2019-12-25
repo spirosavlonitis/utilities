@@ -5,8 +5,13 @@
 
 require("@rails/ujs").start()
 require("turbolinks").start()
+require("jquery")
+//require("jquery-ujs") Error: jquery-ujs has already been loaded!
+require("bootstrap-sprockets").start()
 require("@rails/activestorage").start()
 require("channels")
+
+require("packs/utility")
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
@@ -15,3 +20,4 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
