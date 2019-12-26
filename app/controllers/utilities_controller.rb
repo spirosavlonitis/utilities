@@ -15,7 +15,7 @@ class UtilitiesController < ApplicationController
             amount: utility_params[:amount],
             date_issued: utility_params[:date_issued],
         )
-
+      
       respond_to do |format|
         begin
             @utility.save
