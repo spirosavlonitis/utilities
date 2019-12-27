@@ -67,3 +67,6 @@ gem 'jquery-rails'
 
 #jquery plugin for recipients selection
 gem 'chosen-rails'
+
+#devise
+gem 'devise'
