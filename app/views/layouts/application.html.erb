@@ -31,8 +31,27 @@
           <%= link_to 'Home', "/", class: "nav-link" %>
         </li>        
       </ul>
+      <ul class="navbar-nav ml-auto">
+        <% if current_user %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit Profile<i class="fa fa-cogs"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <!--<a class="dropdown-item" href="#">Action</a>-->
+                <%= link_to edit_user_registration_path, class: "dropdown-item" do%>
+                  <i class="fas fa-id-card"></i>User Info
+                <% end %>
+            </div>
+          </li>
+          <li class="nav-item">
+            <%= link_to  destroy_user_session_path, :method => :delete, class: "nav-link" do%>
+                <i class="fa fa-power-off" ></i>Logout
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
     </nav>
-
     <%= yield %>
   </body>
 </html>
