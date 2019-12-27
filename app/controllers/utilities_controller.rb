@@ -27,8 +27,7 @@ class UtilitiesController < ApplicationController
             
         rescue ActiveRecord::NotNullViolation => e
             format.html { redirect_to '/', notice: 'Utility was not created' }
-            format.json { render :show, status: :unprocessable_entity, location: root }
-        
+            format.json { render :show, status: :unprocessable_entity, location: root }    
         end
       end
   end

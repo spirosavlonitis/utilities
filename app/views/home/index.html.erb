@@ -8,22 +8,151 @@
 <% end %>
 
 <div class="container" >
-    <div class="row" >
-        <div class="col-sm-4" >
+<div class="container" >
+  <div class="row" >
+    <div class="col-sm-12" >
+      <h1 style="text-align: center;" >Utilities</h1>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="score-tab" data-toggle="tab" href="#score" role="tab" aria-controls="score"
+            aria-selected="false">Score</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="score_chart-tab" data-toggle="tab" href="#score_chart" role="tab" aria-controls="score_chart"
+            aria-selected="true">Chart</a>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="score" role="tabpanel" aria-labelledby="score-tab">
+            <h1>foo</h1>
+        </div>
+        <div class="tab-pane fade" id="score_chart" role="tabpanel" aria-labelledby="score_chart-tab">
+          <!-- Chart code -->
+           <script>
+            am4core.ready(function() {
+
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            var chart = am4core.create("chartdiv", am4charts.XYChart);
+            // Increase contrast by taking evey second color
+            chart.colors.step = 2;
             
+            var data = [];
+            const utilities = <%= @utilities %>;
+
+            for ( let key in utilities) {
+                let date = new Date(key.replace(/ \d+:\d+:\d+ \w+/, ''));
+                data.push({
+                    date: date, 
+                    [utilities[key][0]]: utilities[key][1]
+                });
+            }
+            
+            console.log(data)
+            chart.data = data;
+
+            // Create axes
+            var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+            dateAxis.renderer.minGridDistance = 60;
+
+            // Create series
+            function createAxisAndSeries(field, name, opposite, bullet) {
+              var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+              
+              var series = chart.series.push(new am4charts.LineSeries());
+              series.dataFields.valueY = field;
+              series.dataFields.dateX = "date";
+              series.strokeWidth = 2;
+
+              if (field == "DEI")
+                series.yAxis = valueAxis;
+
+              series.name = name;
+              series.tooltipText = "{name}: [bold]{valueY}[/]";
+              series.tensionX = 0.8;
+              
+              var interfaceColors = new am4core.InterfaceColorSet();
+
+/*              
+              switch(bullet) {
+                case "triangle":
+                  var bullet = series.bullets.push(new am4charts.Bullet());
+                  bullet.width = 12;
+                  bullet.height = 12;
+                  bullet.horizontalCenter = "middle";
+                  bullet.verticalCenter = "middle";
+                  
+                  var triangle = bullet.createChild(am4core.Triangle);
+                  triangle.stroke = series.stroke = am4core.color("green"); // red//interfaceColors.getFor("background");
+                  triangle.strokeWidth = 2;
+                  triangle.direction = "top";
+                  triangle.width = 12;
+                  triangle.height = 12;
+                  break;
+                case "rectangle":
+                  var bullet = series.bullets.push(new am4charts.Bullet());
+                  bullet.width = 10;
+                  bullet.height = 10;
+                  bullet.horizontalCenter = "middle";
+                  bullet.verticalCenter = "middle";
+
+                  var rectangle = bullet.createChild(am4core.Rectangle);
+                  rectangle.stroke = interfaceColors.getFor("background");
+                  rectangle.strokeWidth = 2;
+                  rectangle.width = 10;
+                  rectangle.height = 10;
+                  break;
+                default:
+                  var bullet = series.bullets.push(new am4charts.CircleBullet());
+                  bullet.circle.stroke = interfaceColors.getFor("background");
+                  bullet.circle.strokeWidth = 2;
+                  break;
+              }
+              
+*/
+              if (field == "DEI") {
+                valueAxis.renderer.line.strokeOpacity = 1;
+                valueAxis.renderer.line.strokeWidth = 3;
+                valueAxis.renderer.line.stroke = series.stroke;
+                valueAxis.renderer.labels.template.fill = series.stroke;
+                valueAxis.renderer.opposite = opposite;
+                valueAxis.renderer.grid.template.disabled = true;
+
+                var bullet = series.bullets.push(new am4charts.CircleBullet());
+                bullet.circle.stroke = interfaceColors.getFor("background");
+                bullet.circle.strokeWidth = 2;
+
+                var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+                labelBullet.label.text = "{DEI}";
+                labelBullet.label.dy = -20;
+             }
+            }
+
+            createAxisAndSeries("DEI", "DEI", false, "circle");
+
+            // Add legend
+            chart.legend = new am4charts.Legend();
+
+            // Add cursor
+            chart.cursor = new am4charts.XYCursor();
+
+//            chart.cursor.snapToSeries = series;
+            chart.cursor.xAxis = dateAxis;
+
+            //chart.scrollbarY = new am4core.Scrollbar();
+            chart.scrollbarX = new am4core.Scrollbar();
+            }); // end am4core.ready()
+          </script>
+          <!-- HTML -->
+          <div id="chartdiv"></div>
         </div>
-        <div class="col-sm-4" >
-            <h1>Home#index</h1>
-            <% @utilities.each do |utility| %>
-                <p>
-                    <%= utility.company %>&nbsp;
-                    <%= link_to "Edit", edit_utility_path(utility), class: "btn btn-warning" %>
-                    <%= link_to "Delete", utility, method: :delete, data: {confirm: "Are you sure ?"}, class: "btn btn-danger" %>
-                <p>
-            <% end %>
-        </div>
-        <div class="col-sm-4" >
-            <%= link_to "New Utility", utilities_new_path %>
-        </div>
+      </div>
+      
     </div>
+  </div>
+</div>
 </div>
