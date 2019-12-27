@@ -1,5 +1,6 @@
 class UtilitiesController < ApplicationController
 
+  before_action :authenticate_user!
   before_action :set_utility, only: [:destroy, :update, :edit, :show]
 
   def new
@@ -15,6 +16,7 @@ class UtilitiesController < ApplicationController
 
   def create
       @utility= Utility.new(
+            user_id: @user.id,
             company: utility_params[:company],
             amount: utility_params[:amount],
             date_issued: utility_params[:date_issued],
