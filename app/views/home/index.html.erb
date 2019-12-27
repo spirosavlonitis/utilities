@@ -32,7 +32,6 @@
            <script>
             am4core.ready(function() {
 
-
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
@@ -52,7 +51,6 @@
                 });
             }
             
-            console.log(data)
             chart.data = data;
 
             // Create axes
@@ -76,7 +74,6 @@
               series.tensionX = 0.8;
               
               var interfaceColors = new am4core.InterfaceColorSet();
-
 /*              
               switch(bullet) {
                 case "triangle":
@@ -132,8 +129,15 @@
              }
             }
 
-            createAxisAndSeries("DEI", "DEI", false, "circle");
+            companies = ["DEI", "EYDAP", "OTE", "GAS", "TICKETS","COMMONS", "UNEXPECTED"]
 
+            for (let i in companies) {
+                createAxisAndSeries(companies[i], companies[i], false, "circle");
+            }
+/*            createAxisAndSeries("DEI", "DEI", false, "circle");
+            createAxisAndSeries("EYDAP", "EYDAP", false, "circle");
+            createAxisAndSeries("EYDAP", "EYDAP", false, "circle");
+*/
             // Add legend
             chart.legend = new am4charts.Legend();
 
