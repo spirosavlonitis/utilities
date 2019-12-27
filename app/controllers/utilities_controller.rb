@@ -1,4 +1,7 @@
 class UtilitiesController < ApplicationController
+
+  before_action :set_utility, only: [:destroy, :update, :edit, :show]
+
   def new
     @utility = Utility.new
   end
@@ -7,6 +10,7 @@ class UtilitiesController < ApplicationController
   end
 
   def show
+    @utility
   end
 
   def create
@@ -15,7 +19,6 @@ class UtilitiesController < ApplicationController
             amount: utility_params[:amount],
             date_issued: utility_params[:date_issued],
         )
-      
       respond_to do |format|
         begin
             @utility.save
@@ -23,12 +26,33 @@ class UtilitiesController < ApplicationController
             format.json { render :show, status: :created, location: root }
             
         rescue ActiveRecord::NotNullViolation => e
-            puts e.class
             format.html { redirect_to '/', notice: 'Utility was not created' }
             format.json { render :show, status: :unprocessable_entity, location: root }
         
         end
       end
+  end
+
+  def edit
+  end
+
+  def update
+    @utility.update(
+      company: utility_params[:company],
+      amount: (utility_params[:amount] || 0),
+      date_issued: utility_params[:date_issued]
+    )
+    respond_to do |format| 
+      format.html {redirect_to '/', notice: 'Utility entry was successfully updated'}
+    end
+  end
+
+  def destroy
+    @utility.destroy
+    respond_to do |format|
+      format.html {redirect_to '/', notice: 'Utility entry was successfully deleted'}
+      format.json { head(:no_content) }
+    end
   end
 
   private
@@ -37,5 +61,7 @@ class UtilitiesController < ApplicationController
         params.fetch(:utility, :company, :amount, :date_issued,{})
     end
 
-
+    def set_utility
+      @utility = Utility.find params[:id]
+    end
 end

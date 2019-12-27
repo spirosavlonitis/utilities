@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'utilities/new'
   get 'utilities/index'
   get 'utilities/show'
+  #put 'utilities/edit'
   root 'home#index'
 
   resources :utilities
