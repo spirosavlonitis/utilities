@@ -16,7 +16,30 @@
 
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="chart_2019" role="tabpanel" aria-labelledby="chart_2019-tab">
-            <h1>2019</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Date Issued</th>
+                  <th scope="col">Ammount</th>
+                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @utilities_2019.each_with_index do |utility, i| %>
+                    <tr>
+                        <th scope="row">i</th>
+                        <td><%= utility.company %></td>
+                        <td><%= utility.date_issued %></td>
+                        <td><%= utility.amount %></td>
+                        <td><%= link_to "Edit", edit_utility_path(utility), class: "btn btn-warning" %></td>
+                        <td><%= link_to 'Destroy', utility, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger" %></td>
+                    </tr>
+                <% end %>
+              </tbody>
+            </table>
         </div>
         <div class="tab-pane fade" id="chart_2020" role="tabpanel" aria-labelledby="chart_2020-tab">
             <h1>foo</h1>

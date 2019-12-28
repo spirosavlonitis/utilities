@@ -8,6 +8,13 @@ class UtilitiesController < ApplicationController
   end
 
   def index
+    @utilities_2019 = []
+    current_user.utilities.each do |utility|
+      case utility.date_issued.year.to_i
+        when 2019
+          @utilities_2019.push utility
+        end
+      end
   end
 
   def show
