@@ -12,14 +12,12 @@
   
   var data = [];
   const utilities_2019 = <%= @utilities_2019 %>;
-  console.log(utilities_2019)
-  for ( let key in utilities_2019) {
-      let date = new Date(utilities_2019[key][2].replace(/ \d+:\d+:\d+ \w+/, ''));
+  
+  for ( let key in utilities_2019)
       data.push({
-          date: date, 
+          date: new Date(utilities_2019[key][2].replace(/ \d+:\d+:\d+ \w+/, '')), 
           [utilities_2019[key][0]]: utilities_2019[key][1]
       });
-  }
   
   chart.data = data;
 
@@ -99,7 +97,8 @@
   }
 
   companies = [["DEI", "circle"], ["EYDAP", "circle"], ["OTE", "circle"], 
-    ["GAS", "circle"], ["TICKETS", "rectangle"], ["COMMONS", "circle"], ["UNEXPECTED", "triangle"]]
+    ["GAS", "circle"], ["TICKETS", "rectangle"], ["COMMONS", "circle"], ["UNEXPECTED", "triangle"],
+    ["PERSONAL", "triangle"]]
 
   for (let i in companies) {
       createAxisAndSeries(companies[i][0], companies[i][0], false, companies[i][1]);
