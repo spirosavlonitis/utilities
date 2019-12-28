@@ -12,9 +12,9 @@
   
   var data = [];
   const utilities_2019 = <%= @utilities_2019 %>;
-
+  console.log(utilities_2019)
   for ( let key in utilities_2019) {
-      let date = new Date(key.replace(/ \d+:\d+:\d+ \w+/, ''));
+      let date = new Date(utilities_2019[key][2].replace(/ \d+:\d+:\d+ \w+/, ''));
       data.push({
           date: date, 
           [utilities_2019[key][0]]: utilities_2019[key][1]
