@@ -1,123 +1,120 @@
-          <!-- Chart code -->
-           <script>
-            am4core.ready(function() {
+<!-- Chart code -->
+<script>
+  am4core.ready(function() {
 
-            // Themes begin
-            am4core.useTheme(am4themes_animated);
-            // Themes end
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  // Themes end
 
-            var chart = am4core.create("chartdiv_2019", am4charts.XYChart);
-            // Increase contrast by taking evey second color
-            chart.colors.step = 2;
-            
-            var data = [];
-            const utilities_2019 = <%= @utilities_2019 %>;
+  var chart = am4core.create("chartdiv_2019", am4charts.XYChart);
+  // Increase contrast by taking evey second color
+  chart.colors.step = 2;
+  
+  var data = [];
+  const utilities_2019 = <%= @utilities_2019 %>;
 
-            for ( let key in utilities_2019) {
-                let date = new Date(key.replace(/ \d+:\d+:\d+ \w+/, ''));
-                data.push({
-                    date: date, 
-                    [utilities_2019[key][0]]: utilities_2019[key][1]
-                });
-            }
-            
-            chart.data = data;
+  for ( let key in utilities_2019) {
+      let date = new Date(key.replace(/ \d+:\d+:\d+ \w+/, ''));
+      data.push({
+          date: date, 
+          [utilities_2019[key][0]]: utilities_2019[key][1]
+      });
+  }
+  
+  chart.data = data;
 
-            // Create axes
-            var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-            dateAxis.renderer.minGridDistance = 60;
+  // Create axes
+  var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  dateAxis.renderer.minGridDistance = 60;
 
-            // Create series
-            function createAxisAndSeries(field, name, opposite, bullet) {
-              var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  // Create series
+  function createAxisAndSeries(field, name, opposite, bullet) {
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    
+    var series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = field;
+    series.dataFields.dateX = "date";
+    series.strokeWidth = 2;
+
+    if (field == "DEI")
+      series.yAxis = valueAxis;
+
+    series.name = name;
+    series.tooltipText = "{name}: [bold]{valueY}[/]";
+    series.tensionX = 0.8;
+    
+    var interfaceColors = new am4core.InterfaceColorSet();
               
-              var series = chart.series.push(new am4charts.LineSeries());
-              series.dataFields.valueY = field;
-              series.dataFields.dateX = "date";
-              series.strokeWidth = 2;
+    switch(bullet) {
+      case "triangle":
+        var bullet = series.bullets.push(new am4charts.Bullet());
+        bullet.width = 12;
+        bullet.height = 12;
+        bullet.horizontalCenter = "middle";
+        bullet.verticalCenter = "middle";
+        
+        var triangle = bullet.createChild(am4core.Triangle);
+        triangle.stroke = series.stroke = am4core.color("green"); // red//interfaceColors.getFor("background");
+        triangle.strokeWidth = 2;
+        triangle.direction = "top";
+        triangle.width = 12;
+        triangle.height = 12;
+        break;
+      case "rectangle":
+        var bullet = series.bullets.push(new am4charts.Bullet());
+        bullet.width = 10;
+        bullet.height = 10;
+        bullet.horizontalCenter = "middle";
+        bullet.verticalCenter = "middle";
 
-              if (field == "DEI")
-                series.yAxis = valueAxis;
+        var rectangle = bullet.createChild(am4core.Rectangle);
+        rectangle.stroke = interfaceColors.getFor("background");
+        rectangle.strokeWidth = 2;
+        rectangle.width = 10;
+        rectangle.height = 10;
+        break;
+      default:
+        var bullet = series.bullets.push(new am4charts.CircleBullet());
+        bullet.circle.stroke = interfaceColors.getFor("background");
+        bullet.circle.strokeWidth = 2;
+        break;
+    }
+    
 
-              series.name = name;
-              series.tooltipText = "{name}: [bold]{valueY}[/]";
-              series.tensionX = 0.8;
-              
-              var interfaceColors = new am4core.InterfaceColorSet();
-/*              
-              switch(bullet) {
-                case "triangle":
-                  var bullet = series.bullets.push(new am4charts.Bullet());
-                  bullet.width = 12;
-                  bullet.height = 12;
-                  bullet.horizontalCenter = "middle";
-                  bullet.verticalCenter = "middle";
-                  
-                  var triangle = bullet.createChild(am4core.Triangle);
-                  triangle.stroke = series.stroke = am4core.color("green"); // red//interfaceColors.getFor("background");
-                  triangle.strokeWidth = 2;
-                  triangle.direction = "top";
-                  triangle.width = 12;
-                  triangle.height = 12;
-                  break;
-                case "rectangle":
-                  var bullet = series.bullets.push(new am4charts.Bullet());
-                  bullet.width = 10;
-                  bullet.height = 10;
-                  bullet.horizontalCenter = "middle";
-                  bullet.verticalCenter = "middle";
+    if (field == "DEI") {
+      valueAxis.renderer.line.strokeOpacity = 1;
+      valueAxis.renderer.line.strokeWidth = 3;
+      valueAxis.renderer.line.stroke = series.stroke;
+      valueAxis.renderer.labels.template.fill = series.stroke;
+      valueAxis.renderer.opposite = opposite;
+      valueAxis.renderer.grid.template.disabled = true;
 
-                  var rectangle = bullet.createChild(am4core.Rectangle);
-                  rectangle.stroke = interfaceColors.getFor("background");
-                  rectangle.strokeWidth = 2;
-                  rectangle.width = 10;
-                  rectangle.height = 10;
-                  break;
-                default:
-                  var bullet = series.bullets.push(new am4charts.CircleBullet());
-                  bullet.circle.stroke = interfaceColors.getFor("background");
-                  bullet.circle.strokeWidth = 2;
-                  break;
-              }
-              
-*/
-              if (field == "DEI") {
-                valueAxis.renderer.line.strokeOpacity = 1;
-                valueAxis.renderer.line.strokeWidth = 3;
-                valueAxis.renderer.line.stroke = series.stroke;
-                valueAxis.renderer.labels.template.fill = series.stroke;
-                valueAxis.renderer.opposite = opposite;
-                valueAxis.renderer.grid.template.disabled = true;
+      var bullet = series.bullets.push(new am4charts.CircleBullet());
+      bullet.circle.stroke = interfaceColors.getFor("background");
+      bullet.circle.strokeWidth = 2;
 
-                var bullet = series.bullets.push(new am4charts.CircleBullet());
-                bullet.circle.stroke = interfaceColors.getFor("background");
-                bullet.circle.strokeWidth = 2;
+      var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+      labelBullet.label.text = "{DEI}";
+      labelBullet.label.dy = -20;
+   }
+  }
 
-                var labelBullet = series.bullets.push(new am4charts.LabelBullet());
-                labelBullet.label.text = "{DEI}";
-                labelBullet.label.dy = -20;
-             }
-            }
+  companies = [["DEI", "circle"], ["EYDAP", "circle"], ["OTE", "circle"], 
+    ["GAS", "circle"], ["TICKETS", "rectangle"], ["COMMONS", "circle"], ["UNEXPECTED", "triangle"]]
 
-            companies = ["DEI", "EYDAP", "OTE", "GAS", "TICKETS","COMMONS", "UNEXPECTED"]
+  for (let i in companies) {
+      createAxisAndSeries(companies[i][0], companies[i][0], false, companies[i][1]);
+  }
+  // Add legend
+  chart.legend = new am4charts.Legend();
 
-            for (let i in companies) {
-                createAxisAndSeries(companies[i], companies[i], false, "circle");
-            }
-/*            createAxisAndSeries("DEI", "DEI", false, "circle");
-            createAxisAndSeries("EYDAP", "EYDAP", false, "circle");
-            createAxisAndSeries("EYDAP", "EYDAP", false, "circle");
-*/
-            // Add legend
-            chart.legend = new am4charts.Legend();
+  // Add cursor
+  chart.cursor = new am4charts.XYCursor();
 
-            // Add cursor
-            chart.cursor = new am4charts.XYCursor();
+//          chart.cursor.snapToSeries = series;
+  chart.cursor.xAxis = dateAxis;
 
-//            chart.cursor.snapToSeries = series;
-            chart.cursor.xAxis = dateAxis;
-
-            //chart.scrollbarY = new am4core.Scrollbar();
-            chart.scrollbarX = new am4core.Scrollbar();
-            }); // end am4core.ready()
-          </script>
+  //chart.scrollbarY = new am4core.Scrollbar();
+  chart.scrollbarX = new am4core.Scrollbar();
+  }); // end am4core.ready()
+</script>
