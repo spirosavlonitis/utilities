@@ -16,7 +16,7 @@ class UtilitiesController < ApplicationController
 
   def create
       @utility= Utility.new(
-            user_id: @user.id,
+            user_id: current_user.id,
             company: utility_params[:company],
             amount: utility_params[:amount],
             date_issued: utility_params[:date_issued],

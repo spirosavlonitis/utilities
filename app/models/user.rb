@@ -6,4 +6,12 @@ class User < ApplicationRecord
     
     has_many :utilities
 
+    before_create :set_nickname_default
+
+    private
+
+    def set_nickname_default
+        self.nickname = self.email.gsub(/@.+/, '')
+    end
+
 end
