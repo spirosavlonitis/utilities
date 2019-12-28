@@ -33,11 +33,16 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <% if current_user %>
-          <li class="nav-item" >
+          <li class="<%=  request.env['PATH_INFO'] == '/utilities' ? "nav-item active" : "nav-item" %>">
+            <%= link_to  utilities_path, class: "nav-link" do%>
+                <i class="fa fa-list-alt" ></i>Utility Entries
+            <% end %>
+          </li>
+          <li class="<%=  request.env['PATH_INFO'] == '/utilities/new' ? "nav-item active" : "nav-item" %>">
             <%= link_to  new_utility_path, class: "nav-link" do%>
                 <i class="fa fa-list-alt" ></i>New Utility
             <% end %>
-          </li>
+          </li>          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Edit Profile<i class="fa fa-cogs"></i>
