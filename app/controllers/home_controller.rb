@@ -5,17 +5,24 @@ class HomeController < ApplicationController
     def index
         @fields = {2019 => {}, 2020 => {}}
         @utilities = { 2019 => {}, 2020 => {} }
+        @total = {2019 => 0, 2020 => 0}
+        
         current_user.utilities.each_with_index do |utility, i|
-            @utilities[utility.date_issued.year.to_i][i] = [
+            year = utility.date_issued.year.to_i
+            @utilities[year][i] = [
                 utility.company, utility.amount, utility.date_issued
             ]
-            @fields[2019][utility.company] = 0 if @fields[2019][utility.company] == nil
+            @fields[year][utility.company] = 0 if @fields[year][utility.company] == nil # initilize company
         end
-        @total_2019 = @utilities[2019].values.sum do |e| 
-            @fields[2019][e[0]] += e[1]             # add company yearly cost
-            e[1]
+        
+        [2019, 2020].each do |year|
+            @total[year] = @utilities[year].values.sum do |e| 
+                @fields[year][e[0]] += e[1]             # add up company yearly cost
+                e[1]
+            end
         end
-        @utilities.each do |year, values|
+        
+        @utilities.each do |year, values|       # make safe for js usage
             @utilities[year] = @utilities[year].to_json.html_safe
         end
     end
