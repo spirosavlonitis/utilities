@@ -36,7 +36,15 @@
           <h1>Total: <%= @total[2019] %></h1>
         </div>
         <div class="tab-pane fade" id="chart_2020" role="tabpanel" aria-labelledby="chart_2020-tab">
-            <h1>foo</h1>
+          <%= render("utilities_2020") %>
+          <!-- HTML -->
+          <div id="chartdiv_2020" class="chartdiv"></div>
+          <p>
+            <% @fields[2020].each do |company, amount|%>
+              <b><%= company %>: <%= amount %></b>
+            <% end %>
+          </p>
+          <h1>Total: <%= @total[2020] %></h1>
         </div>
     
       </div>

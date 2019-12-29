@@ -6,17 +6,17 @@
   am4core.useTheme(am4themes_animated);
   // Themes end
 
-  var chart = am4core.create("chartdiv_2019", am4charts.XYChart);
+  var chart = am4core.create("chartdiv_2020", am4charts.XYChart);
   // Increase contrast by taking evey second color
   chart.colors.step = 2;
   
   var data = [];
-  const utilities_2019 = <%= @utilities[2019] %>;
+  const utilities_2020 = <%= @utilities[2020] %>;
   
-  for ( let key in utilities_2019)
+  for ( let key in utilities_2020)
       data.push({
-          date: new Date(utilities_2019[key][2].replace(/ \d+:\d+:\d+ \w+/, '')), 
-          [utilities_2019[key][0]]: utilities_2019[key][1]
+          date: new Date(utilities_2020[key][2].replace(/ \d+:\d+:\d+ \w+/, '')), 
+          [utilities_2020[key][0]]: utilities_2020[key][1]
       });
   
   chart.data = data;
