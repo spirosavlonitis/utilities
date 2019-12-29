@@ -12,7 +12,7 @@ class HomeController < ApplicationController
             @fields[2019][utility.company] = 0 if @fields[2019][utility.company] == nil
         end
         @total_2019 = @utilities[2019].values.sum do |e| 
-            @fields[2019][e[0]] += e[1]             # add up yearly cost
+            @fields[2019][e[0]] += e[1]             # add company yearly cost
             e[1]
         end
         @utilities.each do |year, values|
