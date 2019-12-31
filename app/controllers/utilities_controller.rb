@@ -9,7 +9,7 @@ class UtilitiesController < ApplicationController
 
   def index
     @utilities = {2019 => [], 2020 => []}
-    current_user.utilities.each do |utility|
+    current_user.utilities.sort_by { |utility| utility.date_issued }.each do |utility|
       @utilities[utility.date_issued.year.to_i].push utility
     end
   end
